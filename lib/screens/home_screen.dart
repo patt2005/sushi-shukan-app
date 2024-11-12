@@ -54,6 +54,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final isLargeScreen = MediaQuery.of(context).size.width > 768;
+
     return GestureDetector(
       onTap: () => _dismissKeyboard(context),
       child: Scaffold(
@@ -195,7 +197,7 @@ class _HomeScreenState extends State<HomeScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  SizedBox(height: screenSize.height * 0.03),
+                  SizedBox(height: MediaQuery.of(context).size.height * 0.03),
                   Row(
                     children: [
                       GestureDetector(
@@ -214,18 +216,122 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
                         ),
                       ),
-                      SizedBox(width: screenSize.width * 0.04),
-                      Text(
-                        "Master Sushi at Home",
-                        style: TextStyle(
-                          color: kPrimaryColor,
-                          fontWeight: FontWeight.w400,
-                          fontSize: 30,
+                      SizedBox(width: MediaQuery.of(context).size.width * 0.04),
+                      Expanded(
+                        child: Text(
+                          "Master Sushi at Home",
+                          style: TextStyle(
+                            color: kPrimaryColor,
+                            fontWeight: FontWeight.w400,
+                            fontSize: isLargeScreen ? 36 : 30,
+                          ),
                         ),
                       ),
                     ],
                   ),
-                  SizedBox(height: screenSize.height * 0.04),
+                  SizedBox(height: screenSize.height * 0.02),
+                  Container(
+                    padding: EdgeInsets.symmetric(
+                      horizontal:
+                          MediaQuery.of(context).size.width > 768 ? 20 : 10,
+                      vertical:
+                          MediaQuery.of(context).size.width > 768 ? 15 : 7,
+                    ),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(16),
+                      color: const Color(0xFF114960),
+                    ),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Expanded(
+                          flex: MediaQuery.of(context).size.width > 768 ? 2 : 1,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "Master Sushi Making",
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w400,
+                                  fontSize:
+                                      MediaQuery.of(context).size.width > 768
+                                          ? 28
+                                          : 22,
+                                ),
+                              ),
+                              const SizedBox(height: 10),
+                              Text(
+                                "Learn more tips and tricks at mastering sushi making at home!",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w500,
+                                  fontSize:
+                                      MediaQuery.of(context).size.width > 768
+                                          ? 18
+                                          : 16,
+                                  color: Colors.white,
+                                ),
+                              ),
+                              const SizedBox(height: 15),
+                              ElevatedButton(
+                                style: ButtonStyle(
+                                  backgroundColor:
+                                      WidgetStatePropertyAll(kSecondaryColor),
+                                  padding: WidgetStateProperty.all(
+                                    EdgeInsets.symmetric(
+                                      vertical:
+                                          MediaQuery.of(context).size.width >
+                                                  768
+                                              ? 15
+                                              : 10,
+                                      horizontal:
+                                          MediaQuery.of(context).size.width >
+                                                  768
+                                              ? 20
+                                              : 15,
+                                    ),
+                                  ),
+                                ),
+                                onPressed: () async {
+                                  await launchUrl(
+                                    Uri.parse(
+                                        "https://schoolofwok.co.uk/blog/show/how-to-master-making-sushi"),
+                                  );
+                                },
+                                child: Text(
+                                  "Learn more",
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize:
+                                        MediaQuery.of(context).size.width > 768
+                                            ? 18
+                                            : 16,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Expanded(
+                          flex: 1,
+                          child: Padding(
+                            padding: EdgeInsets.only(
+                              left: MediaQuery.of(context).size.width > 768
+                                  ? 20
+                                  : 10,
+                            ),
+                            child: Image.asset(
+                              "assets/images/sushi.png",
+                              fit: BoxFit.contain,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  SizedBox(height: MediaQuery.of(context).size.height * 0.04),
                   TextField(
                     controller: _searchController,
                     decoration: InputDecoration(
@@ -259,89 +365,25 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ),
                   ),
-                  SizedBox(height: screenSize.height * 0.02),
-                  Container(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 10, vertical: 7),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(16),
-                      color: const Color(0xFF114960),
-                    ),
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              const Text(
-                                "Master Sushi Making",
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.w400,
-                                  fontSize: 22,
-                                ),
-                              ),
-                              const Text(
-                                "Learn more tips and tricks at mastering sushi making at home!",
-                                style: TextStyle(
-                                  fontWeight: FontWeight.w500,
-                                  fontSize: 16,
-                                  color: Colors.white,
-                                ),
-                              ),
-                              const SizedBox(height: 7),
-                              ElevatedButton(
-                                style: ButtonStyle(
-                                  backgroundColor:
-                                      WidgetStatePropertyAll(kSecondaryColor),
-                                ),
-                                onPressed: () async {
-                                  await launchUrl(
-                                    Uri.parse(
-                                        "https://schoolofwok.co.uk/blog/show/how-to-master-making-sushi"),
-                                  );
-                                },
-                                child: const Text(
-                                  "Learn more",
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        Expanded(
-                          child: Image.asset(
-                            "assets/images/sushi.png",
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  SizedBox(height: screenSize.height * 0.02),
+                  SizedBox(height: MediaQuery.of(context).size.height * 0.02),
                   Text(
                     "Discover",
                     style: TextStyle(
                         fontWeight: FontWeight.w400,
-                        fontSize: 30,
+                        fontSize: isLargeScreen ? 34 : 30,
                         color: kSecondaryColor),
                   ),
-                  SizedBox(height: screenSize.height * 0.01),
+                  SizedBox(height: MediaQuery.of(context).size.height * 0.01),
                   GridView.builder(
                     physics: const NeverScrollableScrollPhysics(),
                     shrinkWrap: true,
-                    gridDelegate:
-                        const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      crossAxisSpacing: 10,
-                      mainAxisSpacing: 10,
-                      childAspectRatio: 1,
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: isLargeScreen ? 3 : 2,
+                      crossAxisSpacing: 15,
+                      mainAxisSpacing: 15,
+                      childAspectRatio: 1.1,
                     ),
-                    itemCount: filteredSushiItems.length, // Use filtered list
+                    itemCount: filteredSushiItems.length,
                     itemBuilder: (context, index) {
                       return GestureDetector(
                         onTap: () async {
