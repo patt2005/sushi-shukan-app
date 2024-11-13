@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sushi_shukan_app/models/onboarding_info.dart';
-import 'package:sushi_shukan_app/screens/home_screen.dart';
+import 'package:sushi_shukan_app/screens/navigation_screen.dart';
 import 'package:sushi_shukan_app/utilities/colors.dart';
 import 'package:sushi_shukan_app/utilities/utils.dart';
 
@@ -81,7 +81,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                   if (index == onboardingInfoList.length - 1) {
                     await Navigator.of(context).pushReplacement(
                       MaterialPageRoute(
-                        builder: (context) => const HomeScreen(),
+                        builder: (context) => const NavigationPage(),
                       ),
                     );
                     return;
