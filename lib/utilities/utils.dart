@@ -1,3 +1,3 @@
 import 'package:flutter/material.dart';
 
-late Size screenSize;
+late Size size;

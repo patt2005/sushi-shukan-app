@@ -6,7 +6,7 @@ import 'package:sushi_shukan_app/utilities/colors.dart';
 import 'package:sushi_shukan_app/utilities/utils.dart';
 
 class SushiInfoScreen extends StatefulWidget {
-  final SushiItem sushiItemInfo;
+  final SushiItemInfo sushiItemInfo;
 
   const SushiInfoScreen({
     super.key,
@@ -61,7 +61,7 @@ class _SushiInfoScreenState extends State<SushiInfoScreen> {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              SizedBox(height: screenSize.height * 0.08),
+              SizedBox(height: size.height * 0.08),
               Row(
                 children: [
                   GestureDetector(
@@ -83,7 +83,7 @@ class _SushiInfoScreenState extends State<SushiInfoScreen> {
                   ),
                 ],
               ),
-              SizedBox(height: screenSize.height * 0.02),
+              SizedBox(height: size.height * 0.02),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -99,7 +99,7 @@ class _SushiInfoScreenState extends State<SushiInfoScreen> {
                   ),
                 ],
               ),
-              SizedBox(height: screenSize.height * 0.01),
+              SizedBox(height: size.height * 0.01),
               Container(
                 decoration: BoxDecoration(
                   border: Border.all(color: Colors.black),
@@ -109,13 +109,13 @@ class _SushiInfoScreenState extends State<SushiInfoScreen> {
                   borderRadius: BorderRadius.circular(16),
                   child: Image.asset(
                     widget.sushiItemInfo.imageAssetPath,
-                    width: screenSize.width,
-                    height: screenSize.height * 0.22,
+                    width: size.width,
+                    height: size.height * 0.22,
                     fit: BoxFit.cover,
                   ),
                 ),
               ),
-              SizedBox(height: screenSize.height * 0.02),
+              SizedBox(height: size.height * 0.02),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -152,7 +152,7 @@ class _SushiInfoScreenState extends State<SushiInfoScreen> {
                   ),
                 ],
               ),
-              SizedBox(height: screenSize.height * 0.02),
+              SizedBox(height: size.height * 0.02),
               Text(
                 widget.sushiItemInfo.description,
                 style: const TextStyle(
@@ -161,7 +161,7 @@ class _SushiInfoScreenState extends State<SushiInfoScreen> {
                   color: Color(0xFF114960),
                 ),
               ),
-              SizedBox(height: screenSize.height * 0.02),
+              SizedBox(height: size.height * 0.02),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 15),
                 child: Column(
@@ -198,7 +198,7 @@ class _SushiInfoScreenState extends State<SushiInfoScreen> {
                   ],
                 ),
               ),
-              SizedBox(height: screenSize.height * 0.02),
+              SizedBox(height: size.height * 0.02),
               ElevatedButton(
                 style: ButtonStyle(
                   backgroundColor: WidgetStatePropertyAll(kSecondaryColor),
@@ -212,7 +212,7 @@ class _SushiInfoScreenState extends State<SushiInfoScreen> {
                   await Navigator.of(context).push(
                     CupertinoPageRoute(
                       builder: (context) => CookRecipeInfoScreen(
-                        cookRecipeInfo: widget.sushiItemInfo.cookRecipe,
+                        recipeDetails: widget.sushiItemInfo.cookRecipe,
                       ),
                     ),
                   );
@@ -231,7 +231,7 @@ class _SushiInfoScreenState extends State<SushiInfoScreen> {
                   ],
                 ),
               ),
-              SizedBox(height: screenSize.height * 0.05),
+              SizedBox(height: size.height * 0.05),
             ],
           ),
         ),

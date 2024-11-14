@@ -1,15 +1,15 @@
 import 'package:flutter/cupertino.dart';
 import 'package:sushi_shukan_app/utilities/user.dart';
 
-class AppProvider extends ChangeNotifier {
-  final User _user = User(
+class AppManager extends ChangeNotifier {
+  final UserInfo _user = UserInfo(
     name: "John Doe",
     location: "New York City, NY",
     phoneNumber: "+123 456 7890",
     email: "johndoe@gmail.com",
   );
 
-  User get user => _user;
+  UserInfo get user => _user;
 
   void setProfileImagePath(String path) {
     _user.profileImagePath = path;

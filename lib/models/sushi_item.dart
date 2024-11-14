@@ -1,15 +1,15 @@
 import 'package:sushi_shukan_app/models/cook_recipe.dart';
 import 'package:sushi_shukan_app/models/nutrition_info.dart';
 
-class SushiItem {
+class SushiItemInfo {
   final String title;
   final String imageAssetPath;
   final String description;
   final NutritionInfo nutritionInfo;
   final int cookingTime;
-  final CookRecipe cookRecipe;
+  final CookRecipeInfo cookRecipe;
 
-  SushiItem({
+  SushiItemInfo({
     required this.title,
     required this.imageAssetPath,
     required this.description,
@@ -19,8 +19,8 @@ class SushiItem {
   });
 }
 
-List<SushiItem> sushiItemsList = [
-  SushiItem(
+List<SushiItemInfo> sushiItemsList = [
+  SushiItemInfo(
     cookingTime: 15,
     title: "California Rolls",
     imageAssetPath: "assets/images/sushi1.png",
@@ -41,7 +41,7 @@ California rolls are often topped with masago (orange fish roe) or sesame seeds 
       sugar: 67,
       protein: 16,
     ),
-    cookRecipe: CookRecipe(
+    cookRecipe: CookRecipeInfo(
       ingredients: [
         "2 cups sushi rice(460 g), cooked",
         "¼ cup seasoned rice vinegar(60 mL)",
@@ -60,7 +60,7 @@ Grabbing both nori and the mat, roll the mat over the filling so the extra space
 Transfer the roll onto a cutting board. Rub a knife on a damp paper towel before slicing the roll into six equal portions.""",
     ),
   ),
-  SushiItem(
+  SushiItemInfo(
     cookingTime: 30,
     title: "Salmon Nigiri",
     imageAssetPath: "assets/images/sushi2.png",
@@ -77,7 +77,7 @@ The salmon is placed on top of the shari, often with a small dollop of wasabi on
       sugar: 3,
       protein: 20,
     ),
-    cookRecipe: CookRecipe(
+    cookRecipe: CookRecipeInfo(
       ingredients: [
         "2 cups sushi rice(460 g)",
         "¼ cup seasoned rice vinegar(60 mL)",
@@ -95,7 +95,7 @@ Grabbing both nori and the mat, roll the mat over the filling so the extra space
 Transfer the roll onto a cutting board. Rub a knife on a damp paper towel before slicing the roll into six equal portions.""",
     ),
   ),
-  SushiItem(
+  SushiItemInfo(
     cookingTime: 30,
     title: "Spicy Tuna Rolls",
     imageAssetPath: "assets/images/sushi3.png",
@@ -115,7 +115,7 @@ Spicy tuna rolls are a popular choice for those who enjoy bold flavors and are l
       sugar: 54,
       protein: 11,
     ),
-    cookRecipe: CookRecipe(
+    cookRecipe: CookRecipeInfo(
       ingredients: [
         "2 cups sushi rice(460 g), cooked",
         "¼ cup seasoned rice vinegar(60 mL)",
@@ -136,7 +136,7 @@ Grabbing both nori and the mat, roll the mat over the filling so the extra space
 Transfer the roll onto a cutting board. Rub a knife on a damp paper towel before slicing the roll into six equal portions.""",
     ),
   ),
-  SushiItem(
+  SushiItemInfo(
     cookingTime: 30,
     title: "Philadelphia Rolls",
     imageAssetPath: "assets/images/sushi4.png",
@@ -157,7 +157,7 @@ Philadelphia rolls are often served with soy sauce and wasabi. They are a popula
       sugar: 55,
       protein: 7,
     ),
-    cookRecipe: CookRecipe(
+    cookRecipe: CookRecipeInfo(
       ingredients: [
         "¼ cup unseasoned rice vinegar",
         "1 tablespoon granulated sugar",
@@ -183,7 +183,7 @@ Cooked snow peas
 Cooked asparagus""",
     ),
   ),
-  SushiItem(
+  SushiItemInfo(
     title: 'Salmon and Cucumber Rolls',
     imageAssetPath: 'assets/images/sushi5.png',
     description:
@@ -203,7 +203,7 @@ Salmon and Cucumber Rolls are a popular choice for sushi lovers due to their sim
       protein: 18,
     ),
     cookingTime: 30,
-    cookRecipe: CookRecipe(
+    cookRecipe: CookRecipeInfo(
       ingredients: [
         "1 cup sushi rice, cooked and seasoned",
         "4 sheets nori",
@@ -220,7 +220,7 @@ Salmon and Cucumber Rolls are a popular choice for sushi lovers due to their sim
 6. Slice the roll into bite-sized pieces and serve with soy sauce, wasabi, and pickled ginger.""",
     ),
   ),
-  SushiItem(
+  SushiItemInfo(
     title: 'Temari Balls with Salmon',
     imageAssetPath: 'assets/images/sushi6.png',
     description:
@@ -239,7 +239,7 @@ Temari Balls with Salmon are not only a treat for the taste buds but also a visu
       protein: 16,
     ),
     cookingTime: 20,
-    cookRecipe: CookRecipe(
+    cookRecipe: CookRecipeInfo(
       ingredients: [
         "2 cups sushi rice, cooked and seasoned",
         "200g fresh salmon, thinly sliced",

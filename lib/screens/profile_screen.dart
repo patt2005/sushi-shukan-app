@@ -16,14 +16,32 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen> {
   String? _profileImagePath;
-
-  final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _phoneController = TextEditingController();
-  final TextEditingController _locationController = TextEditingController();
-
   bool isEditingName = false;
+  String? _editingField;
+  final _emailController = TextEditingController();
+  final _phoneController = TextEditingController();
+  final _locationController = TextEditingController();
 
-  String? editingField;
+  Future<void> _updateProfileImage() async {
+    final imagePicker = ImagePicker();
+    final image = await imagePicker.pickImage(source: ImageSource.gallery);
+    if (image != null) {
+      final cacheDir = await getTemporaryDirectory();
+      final timestamp = DateTime.now().millisecondsSinceEpoch.toString();
+      final filePath =
+          path.join(cacheDir.path, 'profile_picture_$timestamp.png');
+      final newFile = File(filePath);
+
+      if (await newFile.exists()) {
+        await newFile.delete();
+      }
+
+      await File(image.path).copy(filePath);
+      setState(() {
+        _profileImagePath = filePath;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -32,186 +50,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(20.0),
-          child: Consumer<AppProvider>(
-            builder: (context, value, child) => Column(
+          child: Consumer<AppManager>(
+            builder: (context, appProvider, child) => Column(
               children: [
                 const SizedBox(height: 40),
-                const Text(
-                  "Profile",
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 33,
-                    fontWeight: FontWeight.w600,
-                    letterSpacing: 1.2,
-                  ),
-                ),
+                _buildTitle(),
                 const SizedBox(height: 20),
-                Stack(
-                  children: [
-                    CircleAvatar(
-                      radius: 60,
-                      backgroundColor: Colors.grey.shade300,
-                      backgroundImage: _profileImagePath != null
-                          ? FileImage(File(_profileImagePath!))
-                          : null,
-                      child: _profileImagePath == null
-                          ? const Icon(
-                              Icons.person,
-                              size: 60,
-                              color: Colors.white,
-                            )
-                          : null,
-                    ),
-                    Positioned(
-                      bottom: 0,
-                      right: 0,
-                      child: GestureDetector(
-                        onTap: () async {
-                          final imagePicker = ImagePicker();
-                          final image = await imagePicker.pickImage(
-                              source: ImageSource.gallery);
-                          if (image != null) {
-                            final cacheDir = await getTemporaryDirectory();
-                            final timestamp = DateTime.now()
-                                .millisecondsSinceEpoch
-                                .toString();
-                            final filePath = path.join(cacheDir.path,
-                                'profile_picture_$timestamp.png');
-                            final newFile = File(filePath);
-
-                            if (await newFile.exists()) {
-                              await newFile.delete();
-                            }
-
-                            await File(image.path).copy(filePath);
-                            setState(() {
-                              _profileImagePath = filePath;
-                            });
-                          }
-                        },
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(50),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.black.withOpacity(0.1),
-                                blurRadius: 6,
-                                offset: const Offset(0, 2),
-                              ),
-                            ],
-                          ),
-                          padding: const EdgeInsets.all(8),
-                          child: const Icon(
-                            Icons.edit,
-                            size: 20,
-                            color: Colors.black54,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
+                _buildProfileImage(),
                 const SizedBox(height: 20),
-                GestureDetector(
-                  onTap: () {
-                    setState(() {
-                      isEditingName = true;
-                    });
-                  },
-                  child: isEditingName
-                      ? TextField(
-                          autofocus: true,
-                          decoration: const InputDecoration(
-                            border: UnderlineInputBorder(),
-                            hintText: "Enter your name",
-                          ),
-                          controller:
-                              TextEditingController(text: value.user.name),
-                          onSubmitted: (text) {
-                            setState(() {
-                              value.setUserName(text);
-                              isEditingName = false;
-                            });
-                          },
-                        )
-                      : Text(
-                          value.user.name,
-                          style: const TextStyle(
-                            fontSize: 26,
-                            fontWeight: FontWeight.w600,
-                            letterSpacing: 1.1,
-                          ),
-                        ),
-                ),
+                _buildNameEditor(appProvider),
                 const SizedBox(height: 30),
-                Container(
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(12),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.grey.withOpacity(0.2),
-                        blurRadius: 10,
-                        offset: const Offset(0, 4),
-                      ),
-                    ],
-                  ),
-                  child: Column(
-                    children: [
-                      _buildEditableListTile(
-                        icon: Icons.email,
-                        title: "Email",
-                        value: value.user.email,
-                        editingField: editingField,
-                        controller: _emailController,
-                        onSubmitted: (emailText) {
-                          setState(() {
-                            value.setEmail(emailText);
-                            editingField = null;
-                          });
-                        },
-                        onTap: () => setState(() {
-                          editingField = "email";
-                        }),
-                      ),
-                      _divider(),
-                      _buildEditableListTile(
-                        icon: Icons.phone,
-                        title: "Phone",
-                        value: value.user.phoneNumber,
-                        editingField: editingField,
-                        controller: _phoneController,
-                        onSubmitted: (phone) {
-                          setState(() {
-                            value.setPhoneNumber(phone);
-                            editingField = null;
-                          });
-                        },
-                        onTap: () => setState(() {
-                          editingField = "phone";
-                        }),
-                      ),
-                      _divider(),
-                      _buildEditableListTile(
-                        icon: Icons.location_on,
-                        title: "Location",
-                        value: value.user.location,
-                        editingField: editingField,
-                        controller: _locationController,
-                        onSubmitted: (loc) {
-                          setState(() {
-                            value.setUserLocation(loc);
-                            editingField = null;
-                          });
-                        },
-                        onTap: () => setState(() {
-                          editingField = "location";
-                        }),
-                      ),
-                    ],
-                  ),
-                ),
+                _buildEditableDetails(appProvider),
               ],
             ),
           ),
@@ -220,15 +69,169 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
-  Divider _divider() {
-    return const Divider(
-      height: 1,
-      thickness: 1,
-      color: Colors.grey,
+  Widget _buildTitle() {
+    return const Text(
+      "Profile",
+      style: TextStyle(
+        color: Colors.black,
+        fontSize: 33,
+        fontWeight: FontWeight.w600,
+        letterSpacing: 1.2,
+      ),
     );
   }
 
-  Widget _buildEditableListTile({
+  Widget _buildProfileImage() {
+    return Stack(
+      children: [
+        CircleAvatar(
+          radius: 60,
+          backgroundColor: Colors.grey.shade300,
+          backgroundImage: _profileImagePath != null
+              ? FileImage(File(_profileImagePath!))
+              : null,
+          child: _profileImagePath == null
+              ? const Icon(
+                  Icons.person,
+                  size: 60,
+                  color: Colors.white,
+                )
+              : null,
+        ),
+        Positioned(
+          bottom: 0,
+          right: 0,
+          child: GestureDetector(
+            onTap: _updateProfileImage,
+            child: Container(
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(50),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.1),
+                    blurRadius: 6,
+                    offset: const Offset(0, 2),
+                  ),
+                ],
+              ),
+              padding: const EdgeInsets.all(8),
+              child: const Icon(
+                Icons.edit,
+                size: 20,
+                color: Colors.black54,
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildNameEditor(AppManager appProvider) {
+    return GestureDetector(
+      onTap: () {
+        setState(() {
+          isEditingName = true;
+        });
+      },
+      child: isEditingName
+          ? TextField(
+              autofocus: true,
+              decoration: const InputDecoration(
+                border: UnderlineInputBorder(),
+                hintText: "Enter your name",
+              ),
+              controller: TextEditingController(text: appProvider.user.name),
+              onSubmitted: (text) {
+                setState(() {
+                  appProvider.setUserName(text);
+                  isEditingName = false;
+                });
+              },
+            )
+          : Text(
+              appProvider.user.name,
+              style: const TextStyle(
+                fontSize: 26,
+                fontWeight: FontWeight.w600,
+                letterSpacing: 1.1,
+              ),
+            ),
+    );
+  }
+
+  Widget _buildEditableDetails(AppManager appProvider) {
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(12),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.2),
+            blurRadius: 10,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
+      child: Column(
+        children: [
+          _editableListTile(
+            icon: Icons.email,
+            title: "Email",
+            value: appProvider.user.email,
+            editingField: _editingField,
+            controller: _emailController,
+            onSubmitted: (email) {
+              setState(() {
+                appProvider.setEmail(email);
+                _editingField = null;
+              });
+            },
+            onTap: () => setState(() {
+              _editingField = "email";
+            }),
+          ),
+          _divider(),
+          _editableListTile(
+            icon: Icons.phone,
+            title: "Phone",
+            value: appProvider.user.phoneNumber,
+            editingField: _editingField,
+            controller: _phoneController,
+            onSubmitted: (phone) {
+              setState(() {
+                appProvider.setPhoneNumber(phone);
+                _editingField = null;
+              });
+            },
+            onTap: () => setState(() {
+              _editingField = "phone";
+            }),
+          ),
+          _divider(),
+          _editableListTile(
+            icon: Icons.location_on,
+            title: "Location",
+            value: appProvider.user.location,
+            editingField: _editingField,
+            controller: _locationController,
+            onSubmitted: (loc) {
+              setState(() {
+                appProvider.setUserLocation(loc);
+                _editingField = null;
+              });
+            },
+            onTap: () => setState(() {
+              _editingField = "location";
+            }),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _editableListTile({
     required IconData icon,
     required String title,
     required String value,
@@ -252,6 +255,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
           : Text(value, style: const TextStyle(color: Colors.black87)),
       trailing: const Icon(Icons.edit, color: Colors.grey),
       onTap: onTap,
+    );
+  }
+
+  Divider _divider() {
+    return const Divider(
+      height: 1,
+      thickness: 1,
+      color: Colors.grey,
     );
   }
 }

@@ -1,8 +1,8 @@
-class CookRecipe {
+class CookRecipeInfo {
   final List<String> ingredients;
   final String preparationText;
 
-  CookRecipe({
+  CookRecipeInfo({
     required this.ingredients,
     required this.preparationText,
   });

@@ -7,7 +7,7 @@ import 'package:sushi_shukan_app/utilities/utils.dart';
 void main() {
   runApp(
     ChangeNotifierProvider(
-      create: (context) => AppProvider(),
+      create: (context) => AppManager(),
       child: const MyApp(),
     ),
   );
@@ -18,7 +18,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    screenSize = MediaQuery.of(context).size;
+    size = MediaQuery.of(context).size;
 
     return MaterialApp(
       debugShowCheckedModeBanner: false,

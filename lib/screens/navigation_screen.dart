@@ -13,47 +13,53 @@ class NavigationPage extends StatefulWidget {
 }
 
 class _NavigationPageState extends State<NavigationPage> {
-  int _currentPageIndex = 0;
+  int _selectedTabIndex = 0;
 
-  final List<Widget> _pagesList = [
+  final List<Widget> _screenWidgets = [
     const HomeScreen(),
     const LocationScreen(),
     const ProfileScreen(),
   ];
+
+  void _onTabSelected(int index) {
+    setState(() {
+      _selectedTabIndex = index;
+    });
+  }
+
+  Widget _buildBottomNavigationBar() {
+    return CupertinoTabBar(
+      backgroundColor: Colors.white,
+      currentIndex: _selectedTabIndex,
+      activeColor: kSecondaryColor,
+      inactiveColor: Colors.grey,
+      onTap: _onTabSelected,
+      items: const [
+        BottomNavigationBarItem(
+          icon: Icon(CupertinoIcons.placemark),
+          label: "Home",
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(CupertinoIcons.map),
+          label: "Location",
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(CupertinoIcons.profile_circled),
+          label: "Profile",
+        ),
+      ],
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     return CupertinoPageScaffold(
       child: Stack(
         children: [
-          _pagesList[_currentPageIndex],
+          _screenWidgets[_selectedTabIndex],
           Align(
             alignment: Alignment.bottomCenter,
-            child: CupertinoTabBar(
-              backgroundColor: Colors.white,
-              currentIndex: _currentPageIndex,
-              activeColor: kSecondaryColor,
-              inactiveColor: Colors.grey,
-              onTap: (value) {
-                setState(() {
-                  _currentPageIndex = value;
-                });
-              },
-              items: const [
-                BottomNavigationBarItem(
-                  icon: Icon(CupertinoIcons.placemark),
-                  label: "Home",
-                ),
-                BottomNavigationBarItem(
-                  icon: Icon(CupertinoIcons.map),
-                  label: "Location",
-                ),
-                BottomNavigationBarItem(
-                  icon: Icon(CupertinoIcons.profile_circled),
-                  label: "Profile",
-                ),
-              ],
-            ),
+            child: _buildBottomNavigationBar(),
           ),
         ],
       ),

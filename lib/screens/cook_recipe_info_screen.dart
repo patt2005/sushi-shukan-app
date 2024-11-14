@@ -5,14 +5,14 @@ import 'package:sushi_shukan_app/utilities/colors.dart';
 import 'package:sushi_shukan_app/utilities/utils.dart';
 
 class CookRecipeInfoScreen extends StatelessWidget {
-  final CookRecipe cookRecipeInfo;
+  final CookRecipeInfo recipeDetails;
 
   const CookRecipeInfoScreen({
     super.key,
-    required this.cookRecipeInfo,
+    required this.recipeDetails,
   });
 
-  Widget _buildIngredientInfo(String value) {
+  Widget _createIngredientRow(String ingredient) {
     return Row(
       children: [
         const Text(
@@ -23,14 +23,76 @@ class CookRecipeInfoScreen extends StatelessWidget {
           ),
         ),
         const SizedBox(width: 8),
-        Text(
-          value,
-          style: const TextStyle(
-            fontWeight: FontWeight.w400,
-            fontSize: 17,
+        Flexible(
+          child: Text(
+            ingredient,
+            style: const TextStyle(
+              fontWeight: FontWeight.w400,
+              fontSize: 17,
+            ),
           ),
         ),
       ],
+    );
+  }
+
+  Widget _buildHeader(BuildContext context) {
+    return Row(
+      children: [
+        GestureDetector(
+          onTap: () => Navigator.of(context).pop(),
+          child: Container(
+            padding: const EdgeInsets.all(10),
+            decoration: BoxDecoration(
+              color: kPrimaryColor,
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: const Icon(
+              CupertinoIcons.back,
+              color: Colors.white,
+              size: 25,
+            ),
+          ),
+        ),
+        SizedBox(width: size.width * 0.14),
+        Text(
+          "Cook recipe",
+          style: TextStyle(
+            color: kPrimaryColor,
+            fontSize: 34,
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildSectionTitle(String title) {
+    return Text(
+      title,
+      style: const TextStyle(
+        fontWeight: FontWeight.w600,
+        fontSize: 30,
+        color: Color(0xFF114960),
+      ),
+    );
+  }
+
+  Widget _buildIngredientsList() {
+    return Column(
+      children: recipeDetails.ingredients
+          .map((ingredient) => _createIngredientRow(ingredient))
+          .toList(),
+    );
+  }
+
+  Widget _buildPreparationText() {
+    return Text(
+      recipeDetails.preparationText,
+      style: const TextStyle(
+        color: Colors.black,
+        fontWeight: FontWeight.w400,
+        fontSize: 17,
+      ),
     );
   }
 
@@ -44,74 +106,16 @@ class CookRecipeInfoScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SizedBox(height: screenSize.height * 0.08),
-              Row(
-                children: [
-                  Row(
-                    children: [
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.of(context).pop();
-                        },
-                        child: Container(
-                          padding: const EdgeInsets.all(10),
-                          decoration: BoxDecoration(
-                            color: kPrimaryColor,
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          child: const Icon(
-                            CupertinoIcons.back,
-                            color: Colors.white,
-                            size: 25,
-                          ),
-                        ),
-                      ),
-                      SizedBox(width: screenSize.width * 0.14),
-                      Text(
-                        "Cook recipe",
-                        style: TextStyle(
-                          color: kPrimaryColor,
-                          fontSize: 34,
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-              SizedBox(height: screenSize.height * 0.03),
-              const Text(
-                "Ingredients",
-                style: TextStyle(
-                  fontWeight: FontWeight.w600,
-                  fontSize: 30,
-                  color: Color(0xFF114960),
-                ),
-              ),
-              SizedBox(height: screenSize.height * 0.01),
-              Column(
-                children: [
-                  for (var data in cookRecipeInfo.ingredients)
-                    _buildIngredientInfo(data),
-                ],
-              ),
-              SizedBox(height: screenSize.height * 0.02),
-              const Text(
-                "Preparation",
-                style: TextStyle(
-                  fontWeight: FontWeight.w600,
-                  fontSize: 30,
-                  color: Color(0xFF114960),
-                ),
-              ),
-              Text(
-                cookRecipeInfo.preparationText,
-                style: const TextStyle(
-                  color: Colors.black,
-                  fontWeight: FontWeight.w400,
-                  fontSize: 17,
-                ),
-              ),
-              SizedBox(height: screenSize.height * 0.05),
+              SizedBox(height: size.height * 0.08),
+              _buildHeader(context),
+              SizedBox(height: size.height * 0.03),
+              _buildSectionTitle("Ingredients"),
+              SizedBox(height: size.height * 0.01),
+              _buildIngredientsList(),
+              SizedBox(height: size.height * 0.02),
+              _buildSectionTitle("Preparation"),
+              _buildPreparationText(),
+              SizedBox(height: size.height * 0.05),
             ],
           ),
         ),

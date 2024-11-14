@@ -18,7 +18,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   final TextEditingController _searchController = TextEditingController();
-  List<SushiItem> filteredSushiItems = sushiItemsList;
+  List<SushiItemInfo> filteredSushiItems = sushiItemsList;
 
   @override
   void initState() {
@@ -68,7 +68,7 @@ class _HomeScreenState extends State<HomeScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SizedBox(height: screenSize.height * 0.1),
+                SizedBox(height: size.height * 0.1),
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
@@ -88,7 +88,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                       ),
                     ),
-                    SizedBox(width: screenSize.width * 0.04),
+                    SizedBox(width: size.width * 0.04),
                     const Text(
                       "Settings",
                       style: TextStyle(
@@ -99,7 +99,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ],
                 ),
-                SizedBox(height: screenSize.height * 0.05),
+                SizedBox(height: size.height * 0.05),
                 ListTile(
                   onTap: () async {
                     await launchUrl(
@@ -229,7 +229,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ],
                   ),
-                  SizedBox(height: screenSize.height * 0.02),
+                  SizedBox(height: size.height * 0.02),
                   Container(
                     padding: EdgeInsets.symmetric(
                       horizontal:
@@ -375,7 +375,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                   SizedBox(height: MediaQuery.of(context).size.height * 0.01),
                   GridView.builder(
-                    padding: EdgeInsets.only(bottom: screenSize.height * 0.08),
+                    padding: EdgeInsets.only(bottom: size.height * 0.08),
                     physics: const NeverScrollableScrollPhysics(),
                     shrinkWrap: true,
                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
