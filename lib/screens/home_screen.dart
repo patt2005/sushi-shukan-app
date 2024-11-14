@@ -192,7 +192,7 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
         body: SafeArea(
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 27),
+            padding: const EdgeInsets.symmetric(horizontal: 20),
             child: SingleChildScrollView(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -375,6 +375,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                   SizedBox(height: MediaQuery.of(context).size.height * 0.01),
                   GridView.builder(
+                    padding: EdgeInsets.only(bottom: screenSize.height * 0.08),
                     physics: const NeverScrollableScrollPhysics(),
                     shrinkWrap: true,
                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(

@@ -81,10 +81,16 @@ class _SushiInfoScreenState extends State<SushiInfoScreen> {
                       ),
                     ),
                   ),
-                  SizedBox(width: screenSize.width * 0.1),
+                ],
+              ),
+              SizedBox(height: screenSize.height * 0.02),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
                   Expanded(
                     child: Text(
                       widget.sushiItemInfo.title,
+                      textAlign: TextAlign.center,
                       style: TextStyle(
                         color: kPrimaryColor,
                         fontSize: 34,
@@ -93,7 +99,7 @@ class _SushiInfoScreenState extends State<SushiInfoScreen> {
                   ),
                 ],
               ),
-              SizedBox(height: screenSize.height * 0.04),
+              SizedBox(height: screenSize.height * 0.01),
               Container(
                 decoration: BoxDecoration(
                   border: Border.all(color: Colors.black),

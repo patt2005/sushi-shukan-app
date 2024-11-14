@@ -54,64 +54,132 @@ class _LocationScreenState extends State<LocationScreen> {
           ? const Center(
               child: CupertinoActivityIndicator(),
             )
-          : Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SizedBox(height: screenSize.height * 0.07),
-                  const Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        "Our location",
+          : SafeArea(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(height: screenSize.height * 0.02),
+                    const Center(
+                      child: Text(
+                        "Find Us Here",
                         style: TextStyle(
                           color: Colors.black,
-                          fontSize: 33,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: screenSize.height * 0.02),
-                  SizedBox(
-                    height: screenSize.height * 0.4,
-                    width: screenSize.width,
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(20),
-                      child: GoogleMap(
-                        myLocationButtonEnabled: false,
-                        onMapCreated: (GoogleMapController controller) async {
-                          _controller.complete(controller);
-                        },
-                        myLocationEnabled: true,
-                        markers: _markers,
-                        onTap: (argument) async {},
-                        mapType: MapType.normal,
-                        initialCameraPosition: const CameraPosition(
-                          target: LatLng(40.732253, -74.003659),
-                          zoom: 14,
+                          fontSize: 30,
+                          fontWeight: FontWeight.w600,
+                          letterSpacing: 1.2,
                         ),
                       ),
                     ),
-                  ),
-                  SizedBox(height: screenSize.height * 0.02),
-                  const Text(
-                    "23 Commerce St (btwn Bedford St & 7th Ave S), New York, NY 10014",
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 18,
+                    SizedBox(height: screenSize.height * 0.03),
+                    SizedBox(
+                      height: screenSize.height * 0.4,
+                      width: screenSize.width,
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(20),
+                        child: Stack(
+                          children: [
+                            GoogleMap(
+                              myLocationButtonEnabled: false,
+                              onMapCreated:
+                                  (GoogleMapController controller) async {
+                                _controller.complete(controller);
+                              },
+                              myLocationEnabled: true,
+                              markers: _markers,
+                              mapType: MapType.normal,
+                              initialCameraPosition: const CameraPosition(
+                                target: LatLng(40.732253, -74.003659),
+                                zoom: 14,
+                              ),
+                            ),
+                            Positioned(
+                              bottom: 10,
+                              right: 10,
+                              child: FloatingActionButton(
+                                backgroundColor: Colors.white,
+                                onPressed: () async {
+                                  if (_currentPosition != null) {
+                                    final controller = await _controller.future;
+                                    controller.animateCamera(
+                                      CameraUpdate.newCameraPosition(
+                                          _currentPosition!),
+                                    );
+                                  }
+                                },
+                                child: const Icon(
+                                  Icons.my_location,
+                                  color: Colors.black87,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
                     ),
-                  ),
-                  SizedBox(height: screenSize.height * 0.02),
-                  const Text(
-                    "Located in the West Village, Sushi Shukan offers an exquisite omakase experience under the guidance of Chef Daisuke Nakazawa, a protégé of Jiro Ono.",
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 18,
+                    SizedBox(height: screenSize.height * 0.03),
+                    const Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Icon(
+                          CupertinoIcons.location_solid,
+                          color: Colors.redAccent,
+                          size: 24,
+                        ),
+                        SizedBox(width: 10),
+                        Expanded(
+                          child: Text(
+                            "23 Commerce St (btwn Bedford St & 7th Ave S), New York, NY 10014",
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 18,
+                              fontWeight: FontWeight.w400,
+                              height: 1.4,
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
-                  ),
-                ],
+                    SizedBox(height: screenSize.height * 0.03),
+                    Container(
+                      padding: const EdgeInsets.all(15),
+                      decoration: BoxDecoration(
+                        color: kSecondaryColor,
+                        borderRadius: BorderRadius.circular(12),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.1),
+                            blurRadius: 10,
+                            offset: const Offset(0, 5),
+                          ),
+                        ],
+                      ),
+                      child: const Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Icon(
+                            CupertinoIcons.building_2_fill,
+                            color: Colors.white,
+                            size: 24,
+                          ),
+                          SizedBox(width: 10),
+                          Expanded(
+                            child: Text(
+                              "Located in the West Village, Sushi Shukan offers an exquisite omakase experience under the guidance of Chef Daisuke Nakazawa, a protégé of Jiro Ono.",
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w400,
+                                height: 1.4,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
     );
