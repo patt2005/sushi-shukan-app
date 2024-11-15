@@ -1,12 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:sushi_shukan_app/utilities/user.dart';
 
-class AppManager extends ChangeNotifier {
+class AppStateManager extends ChangeNotifier {
   final UserInfo _user = UserInfo(
-    name: "John Doe",
-    location: "New York City, NY",
-    phoneNumber: "+123 456 7890",
-    email: "johndoe@gmail.com",
+    name: "Daisuke Nakazawa",
+    location: "West Village, NY",
+    phoneNumber: "+1 212-555-1234",
+    email: "info@sushishukan.com",
   );
 
   UserInfo get user => _user;

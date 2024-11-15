@@ -8,8 +8,10 @@ class SushiItemInfo {
   final NutritionInfo nutritionInfo;
   final int cookingTime;
   final CookRecipeInfo cookRecipe;
+  final String category;
 
   SushiItemInfo({
+    required this.category,
     required this.title,
     required this.imageAssetPath,
     required this.description,
@@ -21,6 +23,7 @@ class SushiItemInfo {
 
 List<SushiItemInfo> sushiItemsList = [
   SushiItemInfo(
+    category: "Maki",
     cookingTime: 15,
     title: "California Rolls",
     imageAssetPath: "assets/images/sushi1.png",
@@ -61,6 +64,7 @@ Transfer the roll onto a cutting board. Rub a knife on a damp paper towel before
     ),
   ),
   SushiItemInfo(
+    category: "Nigiri",
     cookingTime: 30,
     title: "Salmon Nigiri",
     imageAssetPath: "assets/images/sushi2.png",
@@ -96,6 +100,7 @@ Transfer the roll onto a cutting board. Rub a knife on a damp paper towel before
     ),
   ),
   SushiItemInfo(
+    category: "Sashimi",
     cookingTime: 30,
     title: "Spicy Tuna Rolls",
     imageAssetPath: "assets/images/sushi3.png",
@@ -137,6 +142,7 @@ Transfer the roll onto a cutting board. Rub a knife on a damp paper towel before
     ),
   ),
   SushiItemInfo(
+    category: "Maki",
     cookingTime: 30,
     title: "Philadelphia Rolls",
     imageAssetPath: "assets/images/sushi4.png",
@@ -184,7 +190,8 @@ Cooked asparagus""",
     ),
   ),
   SushiItemInfo(
-    title: 'Salmon and Cucumber Rolls',
+    category: "Sashimi",
+    title: 'Cucumber Rolls',
     imageAssetPath: 'assets/images/sushi5.png',
     description:
         """Salmon and Cucumber Rolls are a classic sushi roll that combines the fresh, delicate flavor of salmon with the crisp crunch of cucumber. 
@@ -221,7 +228,8 @@ Salmon and Cucumber Rolls are a popular choice for sushi lovers due to their sim
     ),
   ),
   SushiItemInfo(
-    title: 'Temari Balls with Salmon',
+    category: "Nigiri",
+    title: 'Temari Balls',
     imageAssetPath: 'assets/images/sushi6.png',
     description:
         """Temari Balls with Salmon are a beautiful and festive sushi dish that is both elegant and delicious. These sushi balls are perfect for special occasions and gatherings, offering a delightful twist on traditional sushi. 

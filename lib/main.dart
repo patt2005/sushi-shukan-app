@@ -7,7 +7,7 @@ import 'package:sushi_shukan_app/utilities/utils.dart';
 void main() {
   runApp(
     ChangeNotifierProvider(
-      create: (context) => AppManager(),
+      create: (context) => AppStateManager(),
       child: const MyApp(),
     ),
   );

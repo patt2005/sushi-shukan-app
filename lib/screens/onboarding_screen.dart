@@ -14,48 +14,58 @@ class OnboardingScreen extends StatefulWidget {
 class _OnboardingScreenState extends State<OnboardingScreen> {
   final PageController _carouselController = PageController();
 
-  Widget _buildImage(String assetPath) {
+  bool _isIpad(BuildContext context) {
+    final size = MediaQuery.of(context).size;
+    final aspectRatio = size.width / size.height;
+    return size.width >= 768 && aspectRatio < 1.6;
+  }
+
+  Widget _buildImage(String assetPath, BuildContext context) {
+    final isIpad = _isIpad(context);
     return Image.asset(
       assetPath,
-      width: size.height * 0.22,
-      height: size.height * 0.22,
+      width: size.height * (isIpad ? 0.3 : 0.22),
+      height: size.height * (isIpad ? 0.3 : 0.22),
     );
   }
 
-  Widget _buildPageTitle(String title) {
+  Widget _buildPageTitle(String title, BuildContext context) {
+    final isIpad = _isIpad(context);
     return Text(
       title,
       textAlign: TextAlign.center,
       style: TextStyle(
         color: kTextColor,
         fontWeight: FontWeight.w400,
-        fontSize: 35,
+        fontSize: isIpad ? 45 : 35,
       ),
     );
   }
 
-  Widget _buildDescription(String description) {
+  Widget _buildDescription(String description, BuildContext context) {
+    final isIpad = _isIpad(context);
     return Text(
       description,
       textAlign: TextAlign.center,
-      style: const TextStyle(
+      style: TextStyle(
         color: Colors.black,
         fontWeight: FontWeight.w400,
-        fontSize: 20,
+        fontSize: isIpad ? 24 : 20,
       ),
     );
   }
 
-  Widget _buildIndicators(int total, int current) {
+  Widget _buildIndicators(int total, int current, BuildContext context) {
+    final isIpad = _isIpad(context);
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: List.generate(total, (index) {
         return Container(
           margin: const EdgeInsets.symmetric(horizontal: 5),
-          width: index == current ? 50 : 17,
-          height: 17,
+          width: index == current ? (isIpad ? 60 : 50) : (isIpad ? 25 : 17),
+          height: isIpad ? 20 : 17,
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(8.5),
+            borderRadius: BorderRadius.circular(isIpad ? 10 : 8.5),
             color: index == current ? kSecondaryColor : kPrimaryColor,
           ),
         );
@@ -63,23 +73,25 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     );
   }
 
-  Widget _buildOnboardingContent(OnboardingInfo info, int pageIndex) {
+  Widget _buildOnboardingContent(
+      OnboardingInfo info, int pageIndex, BuildContext context) {
+    final isIpad = _isIpad(context);
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20),
+      padding: EdgeInsets.symmetric(horizontal: isIpad ? 40 : 20),
       child: Column(
         children: [
-          SizedBox(height: size.height * 0.1),
-          _buildImage(info.imageAssetPath),
-          SizedBox(height: size.height * 0.05),
-          _buildPageTitle(info.title),
-          SizedBox(height: size.height * 0.01),
-          _buildDescription(info.description),
-          SizedBox(height: size.height * 0.07),
-          _buildIndicators(onboardingInfoList.length, pageIndex),
+          SizedBox(height: size.height * (isIpad ? 0.07 : 0.1)),
+          _buildImage(info.imageAssetPath, context),
+          SizedBox(height: size.height * (isIpad ? 0.07 : 0.05)),
+          _buildPageTitle(info.title, context),
+          SizedBox(height: size.height * (isIpad ? 0.02 : 0.01)),
+          _buildDescription(info.description, context),
+          SizedBox(height: size.height * (isIpad ? 0.1 : 0.07)),
+          _buildIndicators(onboardingInfoList.length, pageIndex, context),
           const Spacer(),
           ElevatedButton(
             style: ElevatedButton.styleFrom(
-              padding: const EdgeInsets.symmetric(vertical: 13),
+              padding: EdgeInsets.symmetric(vertical: isIpad ? 18 : 13),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(15),
               ),
@@ -104,26 +116,27 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               children: [
                 Text(
                   info.buttonText,
-                  style: const TextStyle(
+                  style: TextStyle(
                     color: Colors.white,
-                    fontSize: 20,
+                    fontSize: isIpad ? 24 : 20,
                     fontWeight: FontWeight.w600,
                   ),
                 ),
               ],
             ),
           ),
-          SizedBox(height: size.height * 0.04),
+          SizedBox(height: size.height * (isIpad ? 0.06 : 0.04)),
         ],
       ),
     );
   }
 
-  Widget _buildOnboardingPage(OnboardingInfo info, int pageIndex) {
+  Widget _buildOnboardingPage(
+      OnboardingInfo info, int pageIndex, BuildContext context) {
     return SafeArea(
       child: Container(
         color: kBackgroundColor,
-        child: _buildOnboardingContent(info, pageIndex),
+        child: _buildOnboardingContent(info, pageIndex, context),
       ),
     );
   }
@@ -136,7 +149,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
         controller: _carouselController,
         itemCount: onboardingInfoList.length,
         itemBuilder: (context, index) {
-          return _buildOnboardingPage(onboardingInfoList[index], index);
+          return _buildOnboardingPage(
+              onboardingInfoList[index], index, context);
         },
       ),
     );

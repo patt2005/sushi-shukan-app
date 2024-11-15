@@ -18,6 +18,61 @@ class SushiInfoScreen extends StatefulWidget {
 }
 
 class _SushiInfoScreenState extends State<SushiInfoScreen> {
+  Widget _buildHeader(BuildContext context) {
+    return Stack(
+      children: [
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            SizedBox(height: size.height * 0.055),
+            Text(
+              widget.sushiItemInfo.title,
+              style: TextStyle(
+                color: kPrimaryColor,
+                fontSize: 28,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ],
+        ),
+        Positioned(
+          left: 0,
+          child: GestureDetector(
+            onTap: () => Navigator.of(context).pop(),
+            child: Container(
+              padding: const EdgeInsets.all(10),
+              decoration: BoxDecoration(
+                color: kPrimaryColor,
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: const Icon(
+                CupertinoIcons.back,
+                color: Colors.white,
+                size: 25,
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildHeroImage() {
+    return Hero(
+      tag: "sushiImage-${widget.sushiItemInfo.title}",
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(16),
+        child: Image.asset(
+          widget.sushiItemInfo.imageAssetPath,
+          width: size.width,
+          height: size.height * 0.25,
+          fit: BoxFit.cover,
+        ),
+      ),
+    );
+  }
+
   Widget _buildNutritionRow(String title, String value) {
     return Row(
       children: [
@@ -52,188 +107,143 @@ class _SushiInfoScreenState extends State<SushiInfoScreen> {
     );
   }
 
+  Widget _buildNutritionInfo() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 15),
+      child: Column(
+        children: [
+          Text(
+            "Nutrition Info (4 servings)",
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              color: kSecondaryColor,
+              fontSize: 30,
+              fontWeight: FontWeight.w400,
+            ),
+          ),
+          const SizedBox(height: 10),
+          Column(
+            children: [
+              _buildNutritionRow("Calories",
+                  "${widget.sushiItemInfo.nutritionInfo.calories}g"),
+              _buildNutritionRow(
+                  "Fat", "${widget.sushiItemInfo.nutritionInfo.fat}g"),
+              _buildNutritionRow(
+                  "Carbs", "${widget.sushiItemInfo.nutritionInfo.carbs}g"),
+              _buildNutritionRow(
+                  "Fiber", "${widget.sushiItemInfo.nutritionInfo.fiber}g"),
+              _buildNutritionRow(
+                  "Sugar", "${widget.sushiItemInfo.nutritionInfo.sugar}g"),
+              _buildNutritionRow(
+                  "Protein", "${widget.sushiItemInfo.nutritionInfo.protein}g"),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildCookRecipeButton() {
+    return ElevatedButton(
+      style: ButtonStyle(
+        backgroundColor: WidgetStatePropertyAll(kSecondaryColor),
+        shape: WidgetStatePropertyAll(
+          RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
+        ),
+      ),
+      onPressed: () async {
+        await Navigator.of(context).push(
+          CupertinoPageRoute(
+            builder: (context) => CookRecipeInfoScreen(
+              recipeDetails: widget.sushiItemInfo.cookRecipe,
+              imageAssetPath: widget.sushiItemInfo.imageAssetPath,
+              title: widget.sushiItemInfo.title,
+            ),
+          ),
+        );
+      },
+      child: const Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(
+            "Cook recipe",
+            style: TextStyle(
+              fontWeight: FontWeight.w500,
+              fontSize: 19,
+              color: Colors.white,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: kBackgroundColor,
-      body: Padding(
+      body: SingleChildScrollView(
         padding: const EdgeInsets.symmetric(horizontal: 27),
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              SizedBox(height: size.height * 0.08),
-              Row(
-                children: [
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.of(context).pop();
-                    },
-                    child: Container(
-                      padding: const EdgeInsets.all(10),
-                      decoration: BoxDecoration(
-                        color: kPrimaryColor,
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: const Icon(
-                        CupertinoIcons.back,
-                        color: Colors.white,
-                        size: 25,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              SizedBox(height: size.height * 0.02),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Expanded(
-                    child: Text(
-                      widget.sushiItemInfo.title,
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        color: kPrimaryColor,
-                        fontSize: 34,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              SizedBox(height: size.height * 0.01),
-              Container(
-                decoration: BoxDecoration(
-                  border: Border.all(color: Colors.black),
-                  borderRadius: BorderRadius.circular(16),
-                ),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(16),
-                  child: Image.asset(
-                    widget.sushiItemInfo.imageAssetPath,
-                    width: size.width,
-                    height: size.height * 0.22,
-                    fit: BoxFit.cover,
+        child: Column(
+          children: [
+            SizedBox(height: size.height * 0.08),
+            _buildHeader(context),
+            SizedBox(height: size.height * 0.03),
+            _buildHeroImage(),
+            SizedBox(height: size.height * 0.03),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  "Description",
+                  style: TextStyle(
+                    color: kSecondaryColor,
+                    fontWeight: FontWeight.w400,
+                    fontSize: 31,
                   ),
                 ),
-              ),
-              SizedBox(height: size.height * 0.02),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    "Description",
-                    style: TextStyle(
-                      color: kSecondaryColor,
-                      fontWeight: FontWeight.w400,
-                      fontSize: 31,
-                    ),
+                Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(15),
+                    color: Colors.grey.withOpacity(0.2),
                   ),
-                  Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(15),
-                      color: Colors.grey.withOpacity(0.2),
-                    ),
-                    padding: const EdgeInsets.all(7),
-                    child: Row(
-                      children: [
-                        Icon(
-                          CupertinoIcons.clock,
+                  padding: const EdgeInsets.all(7),
+                  child: Row(
+                    children: [
+                      Icon(
+                        CupertinoIcons.clock,
+                        color: kPrimaryColor,
+                      ),
+                      const SizedBox(width: 3),
+                      Text(
+                        "${widget.sushiItemInfo.cookingTime} minutes",
+                        style: TextStyle(
                           color: kPrimaryColor,
+                          fontSize: 17,
                         ),
-                        const SizedBox(width: 3),
-                        Text(
-                          "${widget.sushiItemInfo.cookingTime} minutes",
-                          style: TextStyle(
-                            color: kPrimaryColor,
-                            fontSize: 17,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-              SizedBox(height: size.height * 0.02),
-              Text(
-                widget.sushiItemInfo.description,
-                style: const TextStyle(
-                  fontWeight: FontWeight.w400,
-                  fontSize: 17,
-                  color: Color(0xFF114960),
-                ),
-              ),
-              SizedBox(height: size.height * 0.02),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 15),
-                child: Column(
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          "Nutrition Info (4 servings)",
-                          style: TextStyle(
-                            color: kSecondaryColor,
-                            fontSize: 30,
-                            fontWeight: FontWeight.w400,
-                          ),
-                        ),
-                      ],
-                    ),
-                    Column(
-                      children: [
-                        _buildNutritionRow("Calories",
-                            "${widget.sushiItemInfo.nutritionInfo.calories}g"),
-                        _buildNutritionRow("Fat",
-                            "${widget.sushiItemInfo.nutritionInfo.fat}g"),
-                        _buildNutritionRow("Carbs",
-                            "${widget.sushiItemInfo.nutritionInfo.carbs}g"),
-                        _buildNutritionRow("Fiber",
-                            "${widget.sushiItemInfo.nutritionInfo.fiber}g"),
-                        _buildNutritionRow("Sugar",
-                            "${widget.sushiItemInfo.nutritionInfo.sugar}g"),
-                        _buildNutritionRow("Protein",
-                            "${widget.sushiItemInfo.nutritionInfo.protein}g"),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-              SizedBox(height: size.height * 0.02),
-              ElevatedButton(
-                style: ButtonStyle(
-                  backgroundColor: WidgetStatePropertyAll(kSecondaryColor),
-                  shape: WidgetStatePropertyAll(
-                    RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
+                      ),
+                    ],
                   ),
                 ),
-                onPressed: () async {
-                  await Navigator.of(context).push(
-                    CupertinoPageRoute(
-                      builder: (context) => CookRecipeInfoScreen(
-                        recipeDetails: widget.sushiItemInfo.cookRecipe,
-                      ),
-                    ),
-                  );
-                },
-                child: const Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      "Cook recipe",
-                      style: TextStyle(
-                        fontWeight: FontWeight.w500,
-                        fontSize: 19,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ],
-                ),
+              ],
+            ),
+            SizedBox(height: size.height * 0.02),
+            Text(
+              widget.sushiItemInfo.description,
+              style: const TextStyle(
+                fontWeight: FontWeight.w400,
+                fontSize: 17,
+                color: Color(0xFF114960),
               ),
-              SizedBox(height: size.height * 0.05),
-            ],
-          ),
+            ),
+            SizedBox(height: size.height * 0.02),
+            _buildNutritionInfo(),
+            SizedBox(height: size.height * 0.03),
+            _buildCookRecipeButton(),
+            SizedBox(height: size.height * 0.05),
+          ],
         ),
       ),
     );

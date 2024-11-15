@@ -6,10 +6,14 @@ import 'package:sushi_shukan_app/utilities/utils.dart';
 
 class CookRecipeInfoScreen extends StatelessWidget {
   final CookRecipeInfo recipeDetails;
+  final String title;
+  final String imageAssetPath;
 
   const CookRecipeInfoScreen({
     super.key,
     required this.recipeDetails,
+    required this.title,
+    required this.imageAssetPath,
   });
 
   Widget _createIngredientRow(String ingredient) {
@@ -37,32 +41,56 @@ class CookRecipeInfoScreen extends StatelessWidget {
   }
 
   Widget _buildHeader(BuildContext context) {
-    return Row(
+    return Stack(
       children: [
-        GestureDetector(
-          onTap: () => Navigator.of(context).pop(),
-          child: Container(
-            padding: const EdgeInsets.all(10),
-            decoration: BoxDecoration(
-              color: kPrimaryColor,
-              borderRadius: BorderRadius.circular(10),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              "Cook recipe",
+              style: TextStyle(
+                color: kPrimaryColor,
+                fontSize: 28,
+                fontWeight: FontWeight.bold,
+              ),
             ),
-            child: const Icon(
-              CupertinoIcons.back,
-              color: Colors.white,
-              size: 25,
-            ),
-          ),
+            SizedBox(height: size.height * 0.055),
+          ],
         ),
-        SizedBox(width: size.width * 0.14),
-        Text(
-          "Cook recipe",
-          style: TextStyle(
-            color: kPrimaryColor,
-            fontSize: 34,
+        Positioned(
+          left: 0,
+          child: GestureDetector(
+            onTap: () => Navigator.of(context).pop(),
+            child: Container(
+              padding: const EdgeInsets.all(10),
+              decoration: BoxDecoration(
+                color: kPrimaryColor,
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: const Icon(
+                CupertinoIcons.back,
+                color: Colors.white,
+                size: 25,
+              ),
+            ),
           ),
         ),
       ],
+    );
+  }
+
+  Widget _buildHeroImage() {
+    return Hero(
+      tag: "sushiImage-$title",
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(16),
+        child: Image.asset(
+          imageAssetPath,
+          width: size.width,
+          height: size.height * 0.25,
+          fit: BoxFit.cover,
+        ),
+      ),
     );
   }
 
@@ -108,6 +136,8 @@ class CookRecipeInfoScreen extends StatelessWidget {
             children: [
               SizedBox(height: size.height * 0.08),
               _buildHeader(context),
+              SizedBox(height: size.height * 0.03),
+              _buildHeroImage(), // Use Hero widget for the image
               SizedBox(height: size.height * 0.03),
               _buildSectionTitle("Ingredients"),
               SizedBox(height: size.height * 0.01),

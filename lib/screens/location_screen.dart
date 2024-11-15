@@ -5,6 +5,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:sushi_shukan_app/utilities/colors.dart';
 import 'package:sushi_shukan_app/utilities/utils.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class LocationScreen extends StatefulWidget {
   const LocationScreen({super.key});
@@ -23,6 +24,9 @@ class _LocationScreenState extends State<LocationScreen> {
       position: LatLng(40.732253, -74.003659),
     ),
   };
+
+  // Additional variable for unused complexity
+  bool _showTrafficLayer = false;
 
   Future<void> _fetchUserLocation() async {
     LocationPermission permissionStatus = await Geolocator.requestPermission();
@@ -55,6 +59,7 @@ class _LocationScreenState extends State<LocationScreen> {
               myLocationButtonEnabled: false,
               myLocationEnabled: true,
               mapType: MapType.normal,
+              trafficEnabled: _showTrafficLayer, // Added traffic layer toggle
               markers: _restaurantMarker,
               onMapCreated: (GoogleMapController controller) async {
                 _mapController.complete(controller);
@@ -167,6 +172,48 @@ class _LocationScreenState extends State<LocationScreen> {
     );
   }
 
+  Widget _buildAdditionalOptions() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: kSecondaryColor,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+            ),
+          ),
+          onPressed: () {
+            setState(() {
+              _showTrafficLayer = !_showTrafficLayer;
+            });
+          },
+          child: Text(
+            _showTrafficLayer ? "Disable Traffic" : "Enable Traffic",
+            style: const TextStyle(color: Colors.white),
+          ),
+        ),
+        ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: kPrimaryColor,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+            ),
+          ),
+          onPressed: () async {
+            const googleMapsUrl =
+                "https://www.google.com/maps/place/23+Commerce+St,+New+York,+NY+10014";
+            await launchUrl(Uri.parse(googleMapsUrl));
+          },
+          child: const Text(
+            "Open in Maps",
+            style: TextStyle(color: Colors.white),
+          ),
+        ),
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -179,14 +226,16 @@ class _LocationScreenState extends State<LocationScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    SizedBox(height: size.height * 0.02),
+                    SizedBox(height: size.height * 0.01),
                     _buildHeaderText(),
-                    SizedBox(height: size.height * 0.03),
+                    SizedBox(height: size.height * 0.01),
                     _buildMap(),
-                    SizedBox(height: size.height * 0.03),
+                    SizedBox(height: size.height * 0.02),
                     _buildAddressRow(),
                     SizedBox(height: size.height * 0.03),
                     _buildDetailsContainer(),
+                    SizedBox(height: size.height * 0.03),
+                    _buildAdditionalOptions(),
                   ],
                 ),
               ),

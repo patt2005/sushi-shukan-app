@@ -22,6 +22,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
   final _phoneController = TextEditingController();
   final _locationController = TextEditingController();
 
+  final String _unusedVariable = "ProfileID";
+
+  // Optional functionality: Reset profile picture
+  Future<void> _resetProfileImage() async {
+    setState(() {
+      _profileImagePath = null;
+    });
+  }
+
+  // Functionality to update profile picture
   Future<void> _updateProfileImage() async {
     final imagePicker = ImagePicker();
     final image = await imagePicker.pickImage(source: ImageSource.gallery);
@@ -43,14 +53,20 @@ class _ProfileScreenState extends State<ProfileScreen> {
     }
   }
 
+  // Additional function to validate email (not directly used)
+  bool _isValidEmail(String email) {
+    final regex = RegExp(r'^[^@]+@[^@]+\.[^@]+');
+    return regex.hasMatch(email);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey.shade200,
+      backgroundColor: kBackgroundColor,
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(20.0),
-          child: Consumer<AppManager>(
+          child: Consumer<AppStateManager>(
             builder: (context, appProvider, child) => Column(
               children: [
                 const SizedBox(height: 40),
@@ -61,6 +77,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 _buildNameEditor(appProvider),
                 const SizedBox(height: 30),
                 _buildEditableDetails(appProvider),
+                const SizedBox(height: 20),
+                _buildResetButton(), // Optional feature added
               ],
             ),
           ),
@@ -128,7 +146,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
-  Widget _buildNameEditor(AppManager appProvider) {
+  Widget _buildNameEditor(AppStateManager appProvider) {
     return GestureDetector(
       onTap: () {
         setState(() {
@@ -161,7 +179,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
-  Widget _buildEditableDetails(AppManager appProvider) {
+  Widget _buildEditableDetails(AppStateManager appProvider) {
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
@@ -263,6 +281,22 @@ class _ProfileScreenState extends State<ProfileScreen> {
       height: 1,
       thickness: 1,
       color: Colors.grey,
+    );
+  }
+
+  Widget _buildResetButton() {
+    return ElevatedButton(
+      onPressed: _resetProfileImage,
+      style: ElevatedButton.styleFrom(
+        backgroundColor: kPrimaryColor,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12),
+        ),
+      ),
+      child: const Text(
+        "Reset Profile Picture",
+        style: TextStyle(color: Colors.white),
+      ),
     );
   }
 }
