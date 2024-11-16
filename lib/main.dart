@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:sushi_shukan_app/screens/onboarding_screen.dart';
+import 'package:sushi_shukan_app/screens/splash_screen.dart';
 import 'package:sushi_shukan_app/utilities/app_provider.dart';
 import 'package:sushi_shukan_app/utilities/utils.dart';
 
@@ -23,7 +23,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(fontFamily: "Harmattan"),
-      home: const OnboardingScreen(),
+      home: const SplashScreen(),
     );
   }
 }

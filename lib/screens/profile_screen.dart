@@ -31,7 +31,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
     });
   }
 
-  // Functionality to update profile picture
   Future<void> _updateProfileImage() async {
     final imagePicker = ImagePicker();
     final image = await imagePicker.pickImage(source: ImageSource.gallery);

@@ -4,6 +4,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:in_app_review/in_app_review.dart';
 import 'package:sushi_shukan_app/components/sushi_card.dart';
 import 'package:sushi_shukan_app/models/sushi_item.dart';
+import 'package:sushi_shukan_app/screens/info_screen.dart';
 import 'package:sushi_shukan_app/screens/sushi_info_screen.dart';
 import 'package:sushi_shukan_app/utilities/colors.dart';
 import 'package:sushi_shukan_app/utilities/utils.dart';
@@ -329,9 +330,13 @@ class _HomeScreenState extends State<HomeScreen> {
             SizedBox(height: size.height * 0.05),
             ListTile(
               onTap: () async {
-                await launchUrl(
-                  Uri.parse(
-                      "https://docs.google.com/document/d/1QZHHNKDJNJqUBTeGoIxs_aclRqd8KLLYuZ5TQehTyRU/edit?usp=sharing"),
+                await Navigator.of(context).push(
+                  CupertinoPageRoute(
+                    builder: (context) => const InfoScreen(
+                        url:
+                            "https://docs.google.com/document/d/1QZHHNKDJNJqUBTeGoIxs_aclRqd8KLLYuZ5TQehTyRU/edit?usp=sharing",
+                        showAppBar: true),
+                  ),
                 );
               },
               leading: const Icon(
@@ -368,9 +373,13 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             ListTile(
               onTap: () async {
-                await launchUrl(
-                  Uri.parse(
-                      "https://docs.google.com/document/d/1kqEF1_yFJdzOOAS5zfhxcvJueg--noc6yc3Ivo_QKQY/edit?usp=sharing"),
+                await Navigator.of(context).push(
+                  CupertinoPageRoute(
+                    builder: (context) => const InfoScreen(
+                        url:
+                            "https://docs.google.com/document/d/1kqEF1_yFJdzOOAS5zfhxcvJueg--noc6yc3Ivo_QKQY/edit?usp=sharing",
+                        showAppBar: true),
+                  ),
                 );
               },
               leading: const Icon(
